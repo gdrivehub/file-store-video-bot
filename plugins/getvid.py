@@ -38,16 +38,16 @@ Anti-spam / performance design
 """
 
 import logging
+import re
 import random
 import asyncio
 import time
 
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait
-from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, UsernameInvalid, UsernameNotModified
+from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, ChatAdminRequired, UsernameInvalid, UsernameNotModified
 
 from info import ADMINS, GETVID_CHANNEL, GETVID_DELAY, PROTECT_CONTENT
-from info import fix_channel_id
 from database import getvid_db as gvdb
 
 logger = logging.getLogger(__name__)
@@ -65,6 +65,8 @@ _index_lock = asyncio.Lock()
 # lot of stale deleted ids in its pool.
 _MAX_DEAD_RETRIES = 5
 
+_LINK_RE = re.compile(r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
+
 
 def _is_admin(user_id):
     return user_id in ADMINS
@@ -78,48 +80,115 @@ async def _resolve_channel():
     return GETVID_CHANNEL
 
 
-async def _scan_channel_for_videos(bot, channel):
+async def _resolve_target(client, message):
     """
-    Walk the full channel history once and collect every video message id.
-    Uses chunked get_chat_history (200 msgs/call) - fine even for channels
-    with tens of thousands of messages since this only runs on demand.
+    Bots cannot call messages.GetHistory (Telegram blocks it for bot accounts),
+    so we can't "browse" a channel's history blindly. Instead - exactly like
+    this repo's existing /index flow - we need the channel's LAST message id,
+    obtained either by:
+      (a) the admin forwarding the channel's most recent post to the bot, or
+      (b) the admin pasting a https://t.me/<channel>/<id> link to that post.
+    Returns (chat_id, last_msg_id) or (None, None) + sends an error reply.
+    """
+    chat_id = None
+    last_msg_id = None
+
+    if message.text:
+        match = _LINK_RE.search(message.text.strip())
+        if match:
+            chat_id = match.group(4)
+            last_msg_id = int(match.group(5))
+            if chat_id.isnumeric():
+                chat_id = int("-100" + chat_id)
+
+    if chat_id is None and message.reply_to_message:
+        fwd = message.reply_to_message
+        if fwd.forward_from_chat and fwd.forward_from_chat.type == enums.ChatType.CHANNEL:
+            last_msg_id = fwd.forward_from_message_id
+            chat_id = fwd.forward_from_chat.username or fwd.forward_from_chat.id
+
+    if chat_id is None:
+        await message.reply_text(
+            "<b>Usage:</b>\n"
+            "1️⃣ Forward the <u>most recent post</u> from the target channel here, "
+            "then reply to that forwarded message with:\n"
+            "<code>/setvidchannel</code>\n\n"
+            "2️⃣ Or just send its link directly:\n"
+            "<code>/setvidchannel https://t.me/channelname/12345</code>\n\n"
+            "ℹ️ I can't scan a channel's full history myself (Telegram blocks that "
+            "for bots) — I need to know the id of the latest post once, then I scan "
+            "everything from 1 up to that id using bot-safe calls.",
+            parse_mode=enums.ParseMode.HTML,
+        )
+        return None, None
+
+    return chat_id, last_msg_id
+
+
+async def _scan_channel_for_videos(client, chat_id, last_msg_id, status=None):
+    """
+    Walk message ids 1..last_msg_id in batches via get_messages (bot-API safe,
+    unlike get_chat_history/iter_messages-by-offset which bots can't use) and
+    collect every video message id. Reports progress on `status` if given.
     """
     ids = []
-    async for message in bot.get_chat_history(channel):
-        if message and not message.empty and message.video:
-            ids.append(message.id)
+    current = 1
+    batch = 200
+    while current <= last_msg_id:
+        chunk_end = min(current + batch - 1, last_msg_id)
+        id_list = list(range(current, chunk_end + 1))
+        try:
+            messages = await client.get_messages(chat_id, id_list)
+        except FloodWait as e:
+            await asyncio.sleep(e.value)
+            messages = await client.get_messages(chat_id, id_list)
+        for m in messages:
+            if m and not m.empty and m.video:
+                ids.append(m.id)
+        current = chunk_end + 1
+        if status and current % 2000 < batch:
+            try:
+                await status.edit_text(f"🔎 Scanning… {current}/{last_msg_id} messages checked, {len(ids)} videos found so far.")
+            except Exception:
+                pass
     return ids
 
 
 @Client.on_message(filters.command("setvidchannel") & filters.user(ADMINS))
 async def set_vid_channel(client, message):
-    if len(message.command) < 2:
-        return await message.reply_text(
-            "<b>Usage:</b> <code>/setvidchannel @channelusername</code> or "
-            "<code>/setvidchannel -1001234567890</code>\n\n"
-            "I must already be an <b>admin</b> in that channel.",
-            parse_mode=enums.ParseMode.HTML,
-        )
-    raw = message.command[1].strip()
-    channel = fix_channel_id(raw)
+    chat_id, last_msg_id = await _resolve_target(client, message)
+    if chat_id is None:
+        return  # usage message already sent
 
-    status = await message.reply_text("🔎 Checking channel access & indexing videos, please wait…")
+    status = await message.reply_text("🔎 Checking channel access…")
     try:
-        await client.get_chat(channel)
+        probe = await client.get_messages(chat_id, last_msg_id)
     except (ChannelInvalid, UsernameInvalid, UsernameNotModified):
         return await status.edit_text(
             "❌ Invalid channel, or I'm not a member/admin there yet. "
-            "Add me as admin in that channel first."
+            "Add me as admin in that channel first, then try again."
         )
+    except ChatAdminRequired:
+        return await status.edit_text("❌ I need to be an admin in that channel.")
     except Exception as e:
         logger.exception(e)
         return await status.edit_text(f"❌ Error accessing channel: {e}")
 
+    if probe is None or probe.empty:
+        return await status.edit_text(
+            "❌ Couldn't read that message. Make sure I'm an admin in the channel "
+            "and the link/forwarded post is correct."
+        )
+
+    if _index_lock.locked():
+        return await status.edit_text("⏳ An indexing job is already running, please wait and try again shortly.")
+
     try:
         async with _index_lock:
-            ids = await _scan_channel_for_videos(client, channel)
-            await gvdb.save_pool(channel, ids)
-            await gvdb.set_active_channel(channel)
+            await status.edit_text("🔎 Scanning channel for videos, please wait… (this can take a bit for large channels)")
+            ids = await _scan_channel_for_videos(client, chat_id, last_msg_id, status)
+            await gvdb.save_pool(chat_id, ids)
+            await gvdb.set_active_channel(chat_id)
     except Exception as e:
         logger.exception(e)
         return await status.edit_text(f"❌ Failed to index channel: {e}")
@@ -132,7 +201,7 @@ async def set_vid_channel(client, message):
 
     await status.edit_text(
         f"✅ <b>/getvid channel set!</b>\n\n"
-        f"Channel: <code>{channel}</code>\n"
+        f"Channel: <code>{chat_id}</code>\n"
         f"Videos indexed: <code>{len(ids)}</code>\n\n"
         f"Users can now use /getvid to get random videos from it.",
         parse_mode=enums.ParseMode.HTML,
@@ -147,20 +216,24 @@ async def reindex_vid_channel(client, message):
             "No channel configured yet. Use /setvidchannel first."
         )
 
+    chat_id, last_msg_id = await _resolve_target(client, message)
+    if chat_id is None:
+        return  # usage message already sent (must point at the same channel)
+
     if _index_lock.locked():
         return await message.reply_text("⏳ An indexing job is already running, please wait.")
 
     status = await message.reply_text("🔎 Re-scanning channel for videos, please wait…")
     try:
         async with _index_lock:
-            ids = await _scan_channel_for_videos(client, channel)
-            await gvdb.save_pool(channel, ids)
+            ids = await _scan_channel_for_videos(client, chat_id, last_msg_id, status)
+            await gvdb.save_pool(chat_id, ids)
     except Exception as e:
         logger.exception(e)
         return await status.edit_text(f"❌ Failed to index channel: {e}")
 
     await status.edit_text(
-        f"✅ Re-indexed <code>{channel}</code>\nVideos found: <code>{len(ids)}</code>",
+        f"✅ Re-indexed <code>{chat_id}</code>\nVideos found: <code>{len(ids)}</code>",
         parse_mode=enums.ParseMode.HTML,
     )
 
