@@ -109,12 +109,8 @@ COLLECTION_NAME = environ.get('COLLECTION_NAME', 'files')
 # ==============================
 # /getvid feature configuration
 # ==============================
-# Source channel the bot pulls random videos from for the /getvid command.
-# Accepts numeric ID, bare ID, @username, or plain username.
-# This is only a *fallback default* - an admin can change it at runtime with
-# /setvidchannel without redeploying, and the runtime value (stored in Mongo)
-# always takes priority over this env var.
-GETVID_CHANNEL = parse_single('GETVID_CHANNEL')
+# /getvid reuses the existing Media index (same files indexed via /index) -
+# no separate channel setting needed. Only the anti-spam delay is configurable.
 # Minimum gap (seconds) enforced between two consecutive /getvid sends,
 # globally across all users/chats - prevents spam/flood from overloading
 # the bot or hitting Telegram flood limits.
