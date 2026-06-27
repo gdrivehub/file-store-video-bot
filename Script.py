@@ -1,6 +1,9 @@
 class script(object):
     START_TXT = """<b>Hᴇʟʟᴏ {} ,
-Mʏ Nᴀᴍᴇ Is <a href=https://t.me/{}>{}</a>, I Cᴀɴ Pʀᴏᴠɪᴅᴇ Hot & Exclusive 🔞Adult content , Watch Aɴᴅ Eɴᴊᴏʏ 😍</b>"""
+Mʏ Nᴀᴍᴇ Is <a href=https://t.me/{}>{}</a>, I Cᴀɴ Pʀᴏᴠɪᴅᴇ Hot & Exclusive 🔞Adult content. 
+Just send the command /getvid, Watch Aɴᴅ Eɴᴊᴏʏ 😍
+
+Also join Exclusive channel to access 70,000+ videos🔥</b>"""
 
     FAST_TXT = """In Development 🤧"""
 

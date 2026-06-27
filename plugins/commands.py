@@ -102,16 +102,10 @@ async def start(client, message):
 
     if len(message.command) != 2 or is_referral_link:
         buttons = [[
-            InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
-        ],[
-            InlineKeyboardButton('Eᴀʀɴ Mᴏɴᴇʏ 💸', callback_data="shortlink_info"),
-            
-            InlineKeyboardButton('〄 Hᴇʟᴘ', callback_data='help')
+            InlineKeyboardButton('⤬ Exclusive 🔞 Hot content💦 ⤬', url=f'https://t.me/+fydJTe9hbXMyMWQ9')
         ],[
             InlineKeyboardButton('⍟ Aʙᴏᴜᴛ', callback_data='about'),
             InlineKeyboardButton('☞ Uᴘᴅᴀᴛᴇꜱ', callback_data='main_channel') 
-        ],[
-            InlineKeyboardButton('💰 Buy Premium for adz Free Movies ✅', callback_data='buy_premium')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         m=await message.reply_text("<i><b>ʜᴇʟʟᴏ. ʜᴏᴡ ᴀʀᴇ ʏᴏᴜ \nᴡᴀɪᴛ ᴀ ᴍᴏᴍᴇɴᴛ ʙʀᴏ . . .</b></i>")
