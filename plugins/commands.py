@@ -442,9 +442,7 @@ async def start(client, message):
                         InlineKeyboardButton('📂 Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ 📂', url=g)
                     ], [
                         InlineKeyboardButton('⁉️ Hᴏᴡ Tᴏ Dᴏᴡɴʟᴏᴀᴅ ⁉️', url=await get_tutorial(chat_id))
-                    ], [
-                        InlineKeyboardButton('💸 Buy Premium For Adz Free Movies ✅', callback_data='buy_premium')
-                    ]
+                    ],
                 ]
             )
         )                                             
@@ -468,8 +466,6 @@ async def start(client, message):
             InlineKeyboardButton('📂 Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ 📂', url=g)
         ], [
             InlineKeyboardButton('⁉️ Hᴏᴡ Tᴏ Dᴏᴡɴʟᴏᴀᴅ ⁉️', url=await get_tutorial(chat_id))
-        ], [
-            InlineKeyboardButton('💸 Buy Premium For Adz Free Movies ✅', callback_data="buy_premium")
         ]]
         k = await client.send_message(
             chat_id=user_id,
@@ -584,8 +580,6 @@ async def start(client, message):
                             InlineKeyboardButton('📁 Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ 📁', url=g)
                         ], [
                             InlineKeyboardButton('⁉️ Hᴏᴡ Tᴏ Dᴏᴡɴʟᴏᴀᴅ ⁉️', url=await get_tutorial(chat_id))
-                        ], [
-                            InlineKeyboardButton('💸 Buy Premium For Adz Free Movies ✅', callback_data='buy_premium')                            
                         ]
                     ]
                 )
