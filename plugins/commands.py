@@ -102,8 +102,7 @@ async def start(client, message):
         buttons = [[
             InlineKeyboardButton('⤬ Exclusive 🔞 Hot content💦 ⤬', url=f'https://t.me/+fydJTe9hbXMyMWQ9')
         ],[
-            InlineKeyboardButton('⍟ Aʙᴏᴜᴛ', callback_data='about'),
-            InlineKeyboardButton('☞ Uᴘᴅᴀᴛᴇꜱ', callback_data='main_channel') 
+            InlineKeyboardButton('☞ Updates Channel', url=f'https://t.me/gdrivehub_backup') 
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         m=await message.reply_text("<i><b>ʜᴇʟʟᴏ. ʜᴏᴡ ᴀʀᴇ ʏᴏᴜ \nᴡᴀɪᴛ ᴀ ᴍᴏᴍᴇɴᴛ ʙʀᴏ . . .</b></i>")
