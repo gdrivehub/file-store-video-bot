@@ -32,6 +32,5 @@ apscheduler
 pyshorteners
 pyromod
 colorama
-cinemagoer
 aiofiles
 youtube-search
