@@ -57,9 +57,7 @@ async def start(client, message):
         return
     if message.chat.type in [enums.ChatType.GROUP, enums.ChatType.SUPERGROUP]:
         buttons = [[
-                    InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
-                ],[
-                    InlineKeyboardButton('Aᴅᴢ Fʀᴇᴇ Mᴏᴠɪᴇꜱ ✅', callback_data='buy_premium'),
+                    InlineKeyboardButton('Aᴅᴢ Fʀᴇᴇ ✅', callback_data='buy_premium'),
                     InlineKeyboardButton('✇ Jᴏɪɴ Oᴜʀ Cʜᴀɴɴᴇʟꜱ ✇', callback_data='main_channel')
                   ]]
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -230,16 +228,8 @@ async def start(client, message):
         return
     if len(message.command) == 2 and message.command[1] in ["subscribe", "error", "okay", "help"]:
         buttons = [[
-            InlineKeyboardButton('⤬ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ ⤬', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
-        ],[
-            InlineKeyboardButton('Eᴀʀɴ Mᴏɴᴇʏ 💸', callback_data="shortlink_info"),
-            
-            InlineKeyboardButton('〄 Hᴇʟᴘ', callback_data='help')
-        ],[
             InlineKeyboardButton('⍟ Aʙᴏᴜᴛ', callback_data='about'),
             InlineKeyboardButton('☞ Uᴘᴅᴀᴛᴇꜱ', callback_data='main_channel') 
-        ],[
-            InlineKeyboardButton('💰 Buy Premium for adz Free Movies ✅', callback_data='buy_premium')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)      
         await message.reply_photo(
