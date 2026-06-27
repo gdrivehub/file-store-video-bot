@@ -1,27 +1,25 @@
 class script(object):
     START_TXT = """<b>Hᴇʟʟᴏ {} ,
-Mʏ Nᴀᴍᴇ Is <a href=https://t.me/{}>{}</a>, I Cᴀɴ Pʀᴏᴠɪᴅᴇ Mᴏᴠɪᴇs, Jᴜsᴛ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘ As Aᴅᴍɪɴ Aɴᴅ Eɴᴊᴏʏ 😍</b>"""
+Mʏ Nᴀᴍᴇ Is <a href=https://t.me/{}>{}</a>, I Cᴀɴ Pʀᴏᴠɪᴅᴇ Hot & Exclusive 🔞Adult content , Watch Aɴᴅ Eɴᴊᴏʏ 😍</b>"""
 
-    FAST_TXT = """CURRENTLY (🚀 FAST DOWNLOAD 🚀) FEATURE IS NOT WORKING, SO USE WATCH ONLINE OR DOWNLOAD TELEGRAM PLZ 🤧"""
+    FAST_TXT = """In Development 🤧"""
 
     HELP_TXT = """<b>Hᴇʏ {}
 Hᴇʀᴇ Is Tʜᴇ Hᴇʟᴘ Fᴏʀ Mʏ Cᴏᴍᴍᴀɴᴅs.</b>"""
 
     ABOUT_TXT = """<b>⍟───[ MY ᴅᴇᴛᴀɪʟꜱ ]───⍟
 ‣ ᴍʏ ɴᴀᴍᴇ : {}
-‣ ʟɪʙʀᴀʀʏ : <a href='https://docs.pyrogram.org/'>ᴘʏʀᴏɢʀᴀᴍ</a> 
-‣ ʟᴀɴɢᴜᴀɢᴇ : <a href='https://www.python.org/download/releases/3.0/'>ᴘʏᴛʜᴏɴ 3</a> 
-‣ ᴅᴀᴛᴀ ʙᴀsᴇ : <a href='https://www.mongodb.com/'>ᴍᴏɴɢᴏ ᴅʙ</a> 
-‣ ʙᴏᴛ sᴇʀᴠᴇʀ : koyeb
-‣ ʙᴜɪʟᴅ sᴛᴀᴛᴜs : ᴠ2.7.1 [sᴛᴀʙʟᴇ]>
-‣ ᴄʀᴇᴅɪᴛs : <a href='https://t.me/muja_tg18'>@muja_tg18</a></b>"""
+‣ GROUP : <a href='https://t.me/gdrivehub_backup'>GDHUBNATION</a> 
+‣ ʙᴏᴛ sᴇʀᴠᴇʀ : cloud-based
+‣ ʙᴜɪʟᴅ sᴛᴀᴛᴜs : ᴠ1.1 [sᴛᴀʙʟᴇ]>
+‣ Exclusive Content : <a href='https://t.me/+fydJTe9hbXMyMWQ9'>🥵HOT VIDEOS Collection 💦</a></b>"""
 
     SOURCE_TXT = """
 <b>Hᴇʏ, Tʜɪs ʙᴏᴛ ɪs ᴀ ɴᴏᴛ  Oᴘᴇɴ Sᴏᴜʀᴄᴇ Pʀᴏᴊᴇᴄᴛ ɪᴛ ɪꜱ ᴘʀɪᴠᴀᴛᴇ ꜱᴏᴜʀᴄᴇ ᴘʀᴏᴊᴇᴄᴛ.
 
 👀 if you want contact admin
 
-Developer - <a href='https://t.me/Muja_tg18'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a></b>"""
+Developer - <a href='mailto:manrisky73@gmail.com'>Email us</a></b>"""
 
 
 
@@ -44,7 +42,7 @@ Cᴏᴍᴍᴀɴᴅs Aɴᴅ Usᴀɢᴇ:
 2. ᴛʜɪꜱ ʙᴏᴛ ꜱᴜᴘᴘᴏʀᴛꜱ ʙᴜᴛᴛᴏɴꜱ ᴡɪᴛʜ ᴀɴʏ ᴛᴇʟᴇɢʀᴀᴍ ᴍᴇᴅɪᴀ ᴛʏᴘᴇ.
 3. ʙᴜᴛᴛᴏɴꜱ ꜱʜᴏᴜʟᴅ ʙᴇ ᴘʀᴏᴘᴇʀʟʏ ᴘᴀʀꜱᴇᴅ ᴀꜱ ᴍᴀʀᴋᴅᴏᴡɴ ꜰᴏʀᴍᴀᴛ
 <b>ᴜʀʟ ʙᴜᴛᴛᴏɴꜱ:</b>
-<code>[Button Text](buttonurl:https://t.me/Teamrioupdates2/3)</code>
+<code>[Button Text](buttonurl:https://t.me/gdhubnation_chat)</code>
 <b>ᴀʟᴇʀᴛ ʙᴜᴛᴛᴏɴꜱ:</b>
 <code>[Button Text](buttonalert:ᴛʜɪꜱ ɪꜱ ᴀɴ ᴀʟᴇʀᴛ ᴍᴇꜱꜱᴀɢᴇ)</code>"""
 
@@ -72,9 +70,7 @@ Cᴏᴍᴍᴀɴᴅs Aɴᴅ Usᴀɢᴇ:
 
     OWNER_INFO = """⍟───[ ᴏᴡɴᴇʀ ᴅᴇᴛᴀɪʟꜱ ]───⍟
     
-• ꜰᴜʟʟ ɴᴀᴍᴇ : MUJA TG 🇮🇳 ℡ ️️
-• ᴜꜱᴇʀɴᴀᴍᴇ : @Muja_tg18
-• ᴄʀᴇᴀᴛᴇ ʏᴏᴜʀ ᴏᴡɴ ʙᴏᴛ : <a href='t.me/Muja_tg18'>ᴄʟɪᴄᴋ ʜᴇʀᴇ</a>"""
+• ꜰᴜʟʟ ɴᴀᴍᴇ : GDHUBNATION</a>"""
 
 
     ADMIN_TXT = """ʜᴇʟᴘ: Aᴅᴍɪɴ Mᴏᴅs
@@ -183,7 +179,7 @@ Tɪᴘ: Sᴇʟᴇᴄᴛ "Lᴀɴɢᴜᴀɢᴇs" ᴏʀ "Sᴇᴀsᴏɴs" Bᴜᴛᴛ
 𝗠𝗲𝘀𝘀𝗮𝗴𝗲 <b>: {}</b>"""
 
 
-    CAPTION = """<b>📂Fɪʟᴇɴᴀᴍᴇ: <a href='https://t.me/rioupdates1'>{file_name}</a>\n\n
+    CAPTION = """<b>📂Fɪʟᴇɴᴀᴍᴇ: <a href='https://t.me/gdrivehub_backup'>{file_name}</a>\n\n
 
 ⚙️ <b>Size: </b> <code>{file_size}</code>""" 
 
@@ -657,9 +653,9 @@ Dᴀᴛᴇ : #{}_{}</b>
 
     MAIN_CHANNEL = """⍟───[ ᴊᴏɪɴ ᴏᴜʀ ᴏꜰꜰɪᴄɪᴀʟ ᴄʜᴀɴɴᴇʟ ᴀɴᴅ ɢʀᴏᴜᴘꜱ ]───⍟
 
-<a href='https://t.me/leviicommunity'>𝐎𝐔𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐒𝐔𝐏𝐏𝐎𝐑𝐓 𝐆𝐑𝐎𝐔𝐏</a>
+<a href='https://t.me/gdhubnation_chat'>𝐎𝐔𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐒𝐔𝐏𝐏𝐎𝐑𝐓 𝐆𝐑𝐎𝐔𝐏</a>
 
-<a href='https://t.me/rioupdates1'>𝐎𝐔𝐑 UPDATES CHANNEL</a>"""
+<a href='https://t.me/gdrivehub_backup'>𝐎𝐔𝐑 UPDATES CHANNEL</a>"""
 
 
     NO_PREMIUM = """This Feature is under Maintenance sorry⚠️🪖"""

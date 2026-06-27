@@ -16,7 +16,6 @@ from utils import temp
 from typing import Union, Optional, AsyncGenerator
 from pyrogram import types
 from Script import script
-import levii_credits  # Attribution & integrity — built by @muja_tg18
 from datetime import date, datetime
 import pytz
 import asyncio
@@ -70,7 +69,6 @@ class Bot(Client):
         logging.info(f"{me.first_name} with for Pyrogram v{__version__} (Layer {layer}) started on {me.username}.")
         logging.info(LOG_STR)
         logging.info(script.LOGO)
-        levii_credits.startup_check()  # Verify attribution integrity
 
         # Send startup message only if LOG_CHANNEL is set
         if LOG_CHANNEL:

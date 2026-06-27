@@ -69,8 +69,8 @@ STREAM_API = environ.get('STREAM_API', '')
 # Premium logs channel — accepts ID or username
 PREMIUM_LOGS = parse_single('PREMIUM_LOGS')
 
-SUBSCRIPTION = environ.get('SUBSCRIPTION', 'https://graph.org/file/a36b4b70f61796cfb8d5d.jpg')
-CODE = environ.get('CODE', 'https://graph.org/file/2790ba63079bbee6b473f.jpg')
+SUBSCRIPTION = environ.get('SUBSCRIPTION', 'https://t.me/gdhubnation_chat')
+CODE = environ.get('CODE', 'https://t.me/gdhubnation_chat')
 
 # Bot settings
 CACHE_TIME = int(environ.get('CACHE_TIME', '300') or '300')
@@ -82,7 +82,7 @@ MELCOW_VID = environ.get("MELCOW_VID", "https://graph.org/file/ca0f3a822fa09df4a
 SPELL_IMG = environ.get("SPELL_IMG", "https://te.legra.ph/file/15c1ad448dfe472a5cbb8.jpg")
 
 # Admins, Channels & Users
-USERNAME = environ.get("USERNAME", "https://t.me/Muja_tg18")
+USERNAME = environ.get("USERNAME", "https://t.me/gdrivehub_backup")
 ADMINS = [int(admin) for admin in environ.get('ADMINS', '').split() if id_pattern.search(admin)]
 
 # All channel/group IDs — accept numeric ID or username
@@ -137,9 +137,9 @@ IS_SHORTLINK = bool(environ.get('IS_SHORTLINK', False))
 DELETE_CHANNELS = [fix_channel_id(dch) for dch in (environ.get('DELETE_CHANNELS', '') or '').split() if dch.strip()]
 MAX_B_TN = environ.get("MAX_B_TN", "5")
 MAX_BTN = is_enabled((environ.get('MAX_BTN', "True")), True)
-GRP_LNK = environ.get('GRP_LNK', 'https://t.me/+K5mivDTeP9lkYjk1')
-CHNL_LNK = environ.get('CHNL_LNK', 'https://t.me/rioupdates1')
-TUTORIAL = environ.get('TUTORIAL', 'https://t.me/muja_tg18')
+GRP_LNK = environ.get('GRP_LNK', 'https://t.me/gdhubnation_chat')
+CHNL_LNK = environ.get('CHNL_LNK', 'https://t.me/gdrivehub_backup')
+TUTORIAL = environ.get('TUTORIAL', 'https://www.google.com')
 IS_TUTORIAL = bool(environ.get('IS_TUTORIAL', True))
 MSG_ALRT = environ.get('MSG_ALRT', 'Men Are Brave')
 
