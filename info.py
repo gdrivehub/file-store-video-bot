@@ -146,6 +146,18 @@ MSG_ALRT = environ.get('MSG_ALRT', 'Men Are Brave')
 # LOG_CHANNEL — optional, accepts ID or username
 LOG_CHANNEL = parse_single('LOG_CHANNEL')
 
+# ==============================
+# Live activity log configuration
+# ==============================
+# Every incoming message (PM + groups) gets mirrored here in real time so
+# you can watch what users are sending and spot spam. Defaults to LOG_CHANNEL
+# if not set separately.
+ACTIVITY_LOG_CHANNEL = parse_single('ACTIVITY_LOG_CHANNEL') or LOG_CHANNEL
+# If a user sends more than ACTIVITY_SPAM_COUNT messages within
+# ACTIVITY_SPAM_WINDOW seconds, the log entry gets flagged 🚨 as likely spam.
+ACTIVITY_SPAM_COUNT = int(parse_positive_number('ACTIVITY_SPAM_COUNT', 5, float))
+ACTIVITY_SPAM_WINDOW = parse_positive_number('ACTIVITY_SPAM_WINDOW', 10, float)
+
 # STREAM_CHANNEL — fallback if LOG_CHANNEL not set, accepts ID or username
 STREAM_CHANNEL = parse_single('STREAM_CHANNEL')
 
