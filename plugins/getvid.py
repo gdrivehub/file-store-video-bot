@@ -52,9 +52,10 @@ import asyncio
 import random
 import time
 
-from pyrogram import Client, filters, enums
+from pyrogram import Client, filters, enums, raw
+from pyrogram import utils as pyroutils
 from pyrogram.errors import FloodWait
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, Message
 
 from info import (
     ADMINS,
@@ -79,6 +80,54 @@ _MAX_DEAD_RETRIES = 5
 MORE_BUTTON = InlineKeyboardMarkup(
     [[InlineKeyboardButton("🎬 Click for more video", callback_data="getvid_more")]]
 )
+
+
+async def _send_cached_video_with_spoiler(
+    client,
+    chat_id,
+    file_id,
+    reply_to_message_id=None,
+    protect_content=None,
+    has_spoiler=False,
+    reply_markup=None,
+):
+    """
+    This repo stores files using Pyrogram's internal packed FileId format
+    (see database/ia_filterdb.py: pack_new_file_id/unpack_new_file_id) - the
+    SAME format Pyrogram's own send_cached_media() decodes via
+    utils.get_input_media_from_file_id(). Plain send_video()/send_document()
+    treat the string as a literal upload reference instead and fail with
+    MEDIA_EMPTY, since that's not what this kind of file_id is.
+
+    So we replicate send_cached_media()'s exact internal logic here (same
+    raw.functions.messages.SendMedia call), with one addition: we set
+    `spoiler=True` on the decoded InputMediaDocument so videos can be sent
+    blurred-until-tapped, which send_cached_media() itself doesn't expose.
+    """
+    media = pyroutils.get_input_media_from_file_id(file_id)
+    if has_spoiler and isinstance(media, raw.types.InputMediaDocument):
+        media.spoiler = True
+
+    r = await client.invoke(
+        raw.functions.messages.SendMedia(
+            peer=await client.resolve_peer(chat_id),
+            media=media,
+            random_id=client.rnd_id(),
+            reply_to_msg_id=reply_to_message_id,
+            noforwards=protect_content,
+            reply_markup=await reply_markup.write(client) if reply_markup else None,
+        )
+    )
+
+    for i in r.updates:
+        if isinstance(i, (raw.types.UpdateNewMessage, raw.types.UpdateNewChannelMessage, raw.types.UpdateNewScheduledMessage)):
+            return await Message._parse(
+                client, i.message,
+                {u.id: u for u in r.users},
+                {c.id: c for c in r.chats},
+                is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
+            )
+    return None
 
 
 @Client.on_message(filters.command("vidstatus") & filters.user(ADMINS))
@@ -136,12 +185,13 @@ async def _deliver_one_video(client, chat_id, user_id, reply_to_message_id=None)
 
         for retry in range(2):  # one shot + one retry after FloodWait
             try:
-                sent_message = await client.send_video(
+                sent_message = await _send_cached_video_with_spoiler(
+                    client,
                     chat_id=chat_id,
-                    video=file_id,
-                    has_spoiler=GETVID_SPOILER,
-                    protect_content=GETVID_PROTECT_CONTENT,
+                    file_id=file_id,
                     reply_to_message_id=reply_to_message_id,
+                    protect_content=GETVID_PROTECT_CONTENT,
+                    has_spoiler=GETVID_SPOILER,
                     reply_markup=MORE_BUTTON,
                 )
                 break
