@@ -112,6 +112,7 @@ async def _send_cached_video_with_spoiler(
         raw.functions.messages.SendMedia(
             peer=await client.resolve_peer(chat_id),
             media=media,
+            message="",
             random_id=client.rnd_id(),
             reply_to_msg_id=reply_to_message_id,
             noforwards=protect_content,
